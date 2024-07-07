@@ -4,58 +4,49 @@ import subprocess
 lex_token = {
     "sunekeh": "if",
     "mohopah": ">",
+    "mohndaw": "<",
     "wonel": "print",
     ":": ":",
-    "kon": "else"
+    "kon": "else",
+    "puru": "for",
+    "bunekasi": "in",
+    "feka": "while",
+    "ligey": "def",
+    "mohemak": "==",
+    "dugal": "input"
 }
-def tokenizer(value:str):
-    tokens = re.split(' |\n|\t', value)
-    generated = ""
-    firstLoop = True
-#     print(tokens)
-    
-    for t in tokens:
-        if t:
-            if t == ":":
-                generated += ":\n    "
-            else:
-                if "wonel" in t:
-                    printStatement = re.split('\(|\)', t)
-                    _print_ = printStatement[0]
-                    printValue = printStatement[1]
-                    generated += f"{lex_token[_print_]}({printValue})"
-                elif t in lex_token.keys():
-                    if firstLoop:
-                        generated += f"{lex_token[t]}"
-                    else:
-                        if lex_token[t] == "else":
-                            generated += f"\n{lex_token[t]}"
-                        else:
-                            generated += f" {lex_token[t]}"
-                else:
-                    if firstLoop:
-                        generated += f"{t}"
-                    else:
-                        generated += f" {t}"
-        firstLoop = False
-    return generated
+
+def generate_code(data: str) -> str:
+    new_data = data
+    for key in lex_token.keys():
+        new_data = new_data.replace(key, lex_token[key])
+    return new_data
 
 def __main__():
     with open("./test.vy") as f:
         content  = f.read()
-        code = tokenizer(content)
+        code = generate_code(content)
     f.close()    
     
     with open("./build.py", "w") as f:
         f.write(code)
     f.close()
     
-    subprocess.run(["python", "build.py"])
+    subprocess.run(["python3", "build.py"])
     
 __main__()
 # print(token[":"])
 
 """
-if 1 > 2:
-    print(True)
+for x in items:
+    print(x)
+
+num = 0
+while num < 10:
+    print(num)
+    num += 1
+
+TODO
+1. Fix casting str and number
+2. Fix print issue
 """
