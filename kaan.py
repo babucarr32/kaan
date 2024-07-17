@@ -14,6 +14,7 @@ lex_tokens = {
     "ligey": "def",
     "mohemak": "==",
     "dugal": "input",
+    "yoka": "+",
     "bena": 1,
     "nyaar": 2,
     "nyet": 3,
@@ -28,6 +29,8 @@ numbers = {
     "nyenent": 4,
     "fuk": 5
 }
+
+arithmetics_values = {}
 
 def split_by_new_line(code: str):
     return re.split('\n', code)
@@ -55,13 +58,18 @@ Tur letter keseh la wara kumaaseh {variable_name}
 """)
     return is_valid
 
-def variable_declaration_error(variable_name: str, variables: [str]):
-    print(f"""
+def variable_declaration_error(variable_name: str, variables = []):
+    if len(variables):
+        print(f"""
 Khejna danga juum, {variable_name} nekut si turii.
                    {"-" * len(variable_name)}
 {variables}
 """)
-
+    else:
+        print(f"""
+Khejna danga juum, {variable_name} nekut si turii.
+                   {"-" * len(variable_name)}
+""")
 def validate_line(text: str) -> bool:
     print("Received ", text)
     return bool(re.search('[a-zA-Z].+(\)|:|\s+|"|[0-9])\B', text))
@@ -94,10 +102,21 @@ def get_code(code: str) -> str:
         return splitedCode[1]
     return splitedCode[0]
 
+def is_doing_arithmetic_operation(code: str) -> bool:
+    return bool(re.match("^{(\s|[a-zA-Z]).*(\s|[a-zA-Z])}\B", code))
+
 def validate_value(variable_value: str, variables:[str]) -> bool:
     is_referencing_value = re.match("[a-zA-Z0-9]", variable_value)
     if is_referencing_value:
         return variable_value in variables or variable_value in numbers.keys()
+    
+    if is_doing_arithmetic_operation(variable_value):
+        values = re.split("({|\s|})", variable_value)
+        for i in values:
+            if not re.match("(\{|\})", i.strip()):
+                if i.strip():
+                    if not i in lex_tokens:
+                        return False
     return True
 
 def validate_print_statement(code: str, text: str, variables: [str]) -> bool:
@@ -128,6 +147,27 @@ Khejna danga juum {bad_content} warut neka fofu
 def is_declaring_variable(code: str):
     return  bool(re.match("[a-zA-Z].+=(\s+|)('|\"|\[|\{|[a-zA-Z0-9]).*(\"|'|\]|\}|[a-zA-Z0-9])\B", code))
 
+def handle_arithmetic(code: str) -> None:
+    values = re.split("({|\s|})", code)
+    calc = ''
+    for i in values:
+        if not re.match("(\{|\})", i.strip()):
+            if i.strip():
+                if i in lex_tokens:
+                    calc += f"{lex_tokens[i]} "
+                else:
+                    variable_declaration_error(i)
+                    quit()
+    
+    result = ''
+    evaluated = eval(calc)
+    for i in numbers:
+        if evaluated == numbers[i]:
+            result = i
+            break
+    if result:
+        arithmetics_values[code] = result
+                
 def validate_tokens(code: str, variables: [str]) -> str:
     line_codes = split_by_new_line(code)
     is_valid = True
@@ -144,6 +184,11 @@ def validate_tokens(code: str, variables: [str]) -> str:
             variable_value = re.split("[a-zA-Z].+=", line)[1].strip()
 
             is_variable_valid = validate_value(variable_value, variables)
+            
+            is_arithmetic = is_doing_arithmetic_operation(variable_value)
+            
+            if is_arithmetic:
+                handle_arithmetic(variable_value)
 
             if not is_variable_valid:
                 variable_declaration_error(variable_value, variables)
@@ -166,14 +211,25 @@ def validate_tokens(code: str, variables: [str]) -> str:
 
 def compile_to_python(code: str, declared_variables:[str]) -> str:
     new_code = ""
-    
+            
     if len(declared_variables):
         for v in declared_variables:
             new_code += f"{v}=''\n"
     
+    new_code += f"\n\n"
+    
+    for v in numbers:
+        new_code +=f"{v}={numbers[v]}\n"
+
     new_code += code
+    if len(arithmetics_values.keys()):
+        for key in arithmetics_values:
+            new_code = new_code.replace(key, f"\"{str(arithmetics_values[key])}\"")
+            
     for key in lex_tokens.keys():
-        new_code = new_code.replace(key, str(lex_tokens[key]))
+        if key not in arithmetics_values.values() and key not in numbers.keys():
+            new_code = new_code.replace(key, str(lex_tokens[key]))
+        
     return new_code
 
 def __main__():
