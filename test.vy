@@ -1,10 +1,25 @@
-{{amut, message, messages}}
+{{amut, message, messages, result, number_two, arit}}
 messages ="Man la messages..."
-amut=fuk
+amut={fuk}
 
 sunekeh bena mohopah nyaar:
-	wonel("Dega")
+        wonel("Dega")
 kon:
-	wonel(amut)
+        wonel(amut)
 
-wonel(nyaar)
+result = {nyaar yoka nyaar}
+wonel(result)
+
+number_two = {nyaar}
+wonel(number_two)
+
+wonel("---------------")
+arit = {bena yoka nyaar}
+wonel(arit)
+arit = {bena ful nyaar}
+wonel(arit)
+arit = {bena waanyi nyaar}
+wonel(arit)
+arit = {bena yoka nyaar yoka nyenent}
+wonel(arit)
+
