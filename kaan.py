@@ -11,10 +11,11 @@ lex_tokens = {
     "puru": "for",
     "bunekasi": "in",
     "feka": "while",
-    "ligey": "def",
+    "defal": "def",
     "mohemak": "==",
     "dugal": "input",
     "yoka": "+",
+    "deloh": "return",
     "waanyi": "-",
     "sedoh": "/",
     "ful": "*",
@@ -36,8 +37,23 @@ numbers = {
 
 arithmetics_values = {}
 
+def is_function(code: str):
+    return bool(re.search('[a-zA-Z]+\(\)$', code))
+
+# def get_code_content(code: str):
+#     splitted_content = code.split("}}")
+#     print("SPlitted", len(splitted_content), code)
+#     content = "".join(splitted_content)
+#     return content
+
+
 def split_by_new_line(code: str):
+    # content = get_code_content(code)
+    # print("content", )
     return re.split('\n', code)
+
+def is_returning(code: str):
+    return bool(re.match('deloh '))
 
 def split_code(code: str):
     clean_code = code.strip()
@@ -80,10 +96,10 @@ def validate_line(text: str) -> bool:
 
 def get_variables(code: str):
     variable_names = []
-    variable_scope = re.findall('\{\{.*?\}\}', code, re.DOTALL)
+    variable_scope = re.findall('\{\{.*?\}\}', code, flags=re.DOTALL)
     if len(variable_scope):
         sanitize_variables = re.sub("(\n|\t)", "", variable_scope[0])
-        split_variables = re.split("({{|}}|,)", sanitize_variables)
+        split_variables = re.split("(\{\{|\}\}|,)", sanitize_variables)
         
         for i in split_variables:
             ii = i.strip()
@@ -101,7 +117,7 @@ def is_initialized_variables_valid(variable_names: [str]) -> bool:
     return is_valid
 
 def get_code(code: str) -> str:
-    splitedCode = re.split('\{\{.*?\}\}', code, re.DOTALL)
+    splitedCode = re.split('\{\{.*?\}\}', code, flags=re.DOTALL)
     if len(splitedCode) > 1:
         return splitedCode[1]
     return splitedCode[0]
@@ -111,7 +127,8 @@ def is_doing_arithmetic_operation(code: str) -> bool:
 
 def validate_value(variable_value: str, variables:[str]) -> bool:
     is_referencing_value = re.match("[a-zA-Z0-9]", variable_value)
-    if is_referencing_value:
+    is_func = is_function(variable_value)
+    if is_referencing_value and not is_func:
         return variable_value in variables or variable_value in numbers.keys()
     
     if is_doing_arithmetic_operation(variable_value):
@@ -232,11 +249,12 @@ def validate_tokens(code: str, variables: [str]) -> str:
                         if is_print_statement(token):
                             validate_print_statement(code, token, variables)
                         else:
-                            # make sure token is not ''
-                            is_valid = is_token_in_lex_tokens(token)
-                            if not is_valid:
-                                print("breaking...", token)
-                                break
+                            if not is_function(token):
+                                # make sure token is not ''
+                                is_valid = is_token_in_lex_tokens(token)
+                                if not is_valid:
+                                    print("breaking...", token)
+                                    break
             else:
                 break
     return is_valid
@@ -339,5 +357,6 @@ kon:
 Allowed data types [] {} number and string
 Only positive numbers as allowed()
 floats are rounded to to the nearest number .75 becomes .8
-
+{bena yoka nyaar}asds
+    Throws error. Fix print statement
 """

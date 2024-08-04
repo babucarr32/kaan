@@ -1,9 +1,12 @@
 amut=''
+defa=''
+arit=''
+result=''
 message=''
 messages=''
-result=''
+resulter=''
 number_two=''
-arit=''
+defkatValue=''
 
 
 neen=0
@@ -42,3 +45,10 @@ print(arit)
 arit = "juromNyaar"
 print(arit)
 
+resulter = "nyet"
+print("Hello world" + "Tent")
+
+def tur():
+        print("Man mai def")
+
+defkatValue = tur()

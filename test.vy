@@ -1,4 +1,15 @@
-{{amut, message, messages, result, number_two, arit}}
+{{ 
+        
+        amut,
+        defa,
+        arit, 
+        result,
+        message,
+        messages,
+        resulter,
+        number_two,
+        defkatValue,
+}}
 messages ="Man la messages..."
 amut={fuk}
 
@@ -23,3 +34,11 @@ wonel(arit)
 arit = {bena yoka nyaar yoka nyenent}
 wonel(arit)
 
+resulter = {bena yoka nyaar}
+wonel("Hello world" + "Tent")
+
+defal tur():
+        wonel("Man mai defal")
+        deloh "Man la man la..."
+
+defkatValue = tur()
