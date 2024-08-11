@@ -1,6 +1,7 @@
 amut=''
 defa=''
 arit=''
+tura=''
 result=''
 message=''
 messages=''
@@ -20,6 +21,7 @@ juromNyaar=7
 juromNyet=8
 juromNyenent=9
 fuk=10
+
 
 messages ="Man la messages..."
 amut="fuk"
@@ -54,3 +56,9 @@ def tur():
 
 defkatValue = tur()
 print(defkatValue)
+
+while bena < jurom:
+        tura = input("Lan moneka sa tur? ")
+        if tura == "Babucarr":
+                print("Welcome " + tura)
+                break

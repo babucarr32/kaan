@@ -2,7 +2,8 @@
         
         amut,
         defa,
-        arit, 
+        arit,
+        tura,
         result,
         message,
         messages,
@@ -44,3 +45,9 @@ defal tur():
 
 defkatValue = tur()
 wonel(defkatValue)
+
+feka bena mohndaw jurom:
+        tura = dugal("Lan moneka sa tur? ")
+        sunekeh tura mohemak "Babucarr":
+                wonel("Welcome " + tura)
+                dama

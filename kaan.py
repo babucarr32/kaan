@@ -12,6 +12,7 @@ lex_tokens = {
     "bunekasi": "in",
     "feka": "while",
     "defal": "def",
+    "dama": "break",
     "mohemak": "==",
     "dugal": "input",
     "yoka": "+",
@@ -54,7 +55,17 @@ def is_returning(code: str) -> bool:
     return bool(re.match('deloh ', code))
 
 def validate_return(code: str) -> bool:
-    return bool(re.match("deloh(\s+|\s)(\".*\"\B|\'.*\'\B)", code))
+    return bool(re.match("deloh(\s+|\s)((\s+|\s|)(\".*\"|\'.*\')$)", code))
+
+def is_taking_input(code: str) -> bool:
+    return  bool(re.match("dugal(\s+|\s|)(\((\s+|\s|)(\".*\"|\'.*\')(\s+|\s|)\)$)", code))
+
+def is_string(code: str) -> bool:
+    return bool(re.match('(\"|\')[a-zA-Z0-0]+(\"|\')', code))
+
+def validate_line(code: str) -> bool:
+    # (?<!::) is a negative lookbehind assertion.
+    return bool(re.match(r"^[a-zA-Z0-9].*(?<!(\;|\=|\-|\*|\&|\^|\%|\$|\#|\@|\!|\±|\§|\`|\~|\||\?|\/|\>|\<|\,|\.))(?<!\)\))(?<!::[^)])(?<!}}[^)])(?<!}[^)])(?<!:[^)\s])$", code))
 
 def split_code(code: str):
     clean_code = code.strip()
@@ -91,9 +102,6 @@ Khejna danga juum, {variable_name} nekut si turii.
 Khejna danga juum, {variable_name} nekut si turii.
                    {"-" * len(variable_name)}
 """)
-def validate_line(text: str) -> bool:
-    print("Received ", text)
-    return bool(re.search('[a-zA-Z].+(\)|:|\s+|"|[0-9])\B', text))
 
 def get_variables(code: str):
     variable_names = []
@@ -129,7 +137,8 @@ def is_doing_arithmetic_operation(code: str) -> bool:
 def validate_value(variable_value: str, variables:[str]) -> bool:
     is_referencing_value = re.match("[a-zA-Z0-9]", variable_value)
     is_func = is_function(variable_value)
-    if is_referencing_value and not is_func:
+    is_input = is_taking_input(variable_value)
+    if is_referencing_value and not is_func and not is_input:
         return variable_value in variables or variable_value in numbers.keys()
     
     if is_doing_arithmetic_operation(variable_value):
@@ -216,56 +225,66 @@ def handle_arithmetic(code: str) -> None:
     if result:
         arithmetics_values[code] = result
                 
-def validate_tokens(code: str, variables: [str]) -> str:
+def validate_tokens(code: str, declared_variables: [str]) -> str:
     line_codes = split_by_new_line(code)
     is_valid = True
 
     for line in line_codes:
-        if is_declaring_variable(line):
-            variable_name = line.split("=")[0].strip()
-            
-            if not variable_name in variables:
-                variable_declaration_error(variable_name, variables)
-                quit()
+        strippedLine = line.strip()
+        if validate_line(strippedLine):
+            if is_declaring_variable(strippedLine):
+                variable_name = line.split("=")[0].strip()
+                if not variable_name in declared_variables:
+                    variable_declaration_error(variable_name, declared_variables)
+                    quit()
+                    
+                variable_value = re.split("[a-zA-Z].+=", line)[1].strip()
+
+                is_variable_valid = validate_value(variable_value, declared_variables)
                 
-            variable_value = re.split("[a-zA-Z].+=", line)[1].strip()
+                is_arithmetic = is_doing_arithmetic_operation(variable_value)
+                
+                if is_arithmetic:
+                    handle_arithmetic(variable_value)
 
-            is_variable_valid = validate_value(variable_value, variables)
-            
-            is_arithmetic = is_doing_arithmetic_operation(variable_value)
-            
-            if is_arithmetic:
-                handle_arithmetic(variable_value)
+                if not is_variable_valid:
+                    print("*****", is_variable_valid)
+                    variable_declaration_error(variable_value, declared_variables)
+                    quit()
 
-            if not is_variable_valid:
-                print("*****", is_variable_valid)
-                variable_declaration_error(variable_value, variables)
-                quit()
+            elif is_taking_input(strippedLine):
+                pass
 
-        elif is_returning(line.strip()):
-            is_return_valid = validate_return(line.strip())
-            if not is_return_valid:
-                print(f"""
-Khejna danga juum {line.strip()} warut neka fofu
-                  {"-"*len(line.strip())}""")
-                quit()
-            
-        else:
-            if is_valid:
-                tokens = split_code(line)
-                for token in tokens:
-                    if token:
-                        if is_print_statement(token):
-                            validate_print_statement(code, token, variables)
-                        else:
-                            if not is_function(token):
-                                # make sure token is not ''
-                                is_valid = is_token_in_lex_tokens(token)
-                                if not is_valid:
-                                    print("breaking...", token)
-                                    break
+            elif is_returning(strippedLine):
+                is_return_valid = validate_return(strippedLine)
+                if not is_return_valid:
+                    print(f"""
+    Khejna danga juum {strippedLine} warut neka fofu
+                    {"-"*len(strippedLine)}""")
+                    quit()
+                
             else:
-                break
+                if is_valid:
+                    tokens = split_code(line)
+                    for token in tokens:
+                        if token:
+                            if is_print_statement(token):
+                                validate_print_statement(code, token, declared_variables)
+                            else:
+                                if not is_function(token):
+                                    # make sure token is not ''
+                                    is_valid = is_token_in_lex_tokens(token) or token in declared_variables or is_string(token)
+                                    if not is_valid:
+                                        print("breaking...", token)
+                                        break
+                else:
+                    break
+        else:
+            if strippedLine:
+                print(f"""
+Khejna danga juum {strippedLine} warut neka fofu
+                  {"-"*len(strippedLine)}""")
+                quit()
     return is_valid
 
 def compile_to_python(code: str, declared_variables:[str]) -> str:
@@ -339,7 +358,9 @@ sunekeh nyet mohopah nyaar:
 kon:
         wonel(Falseisdifesfdf)
 5. Numbers should be separated from lex tokens to prevent tokens like kon from passing value checks
-
+6. Keyboard interupt error on taking input. (Potential fix use string template to wrap input with try catch and display custom error)
+7. Test wonel(name())
+8. defkatValue = tur(): (Enhance the error message for this line )
 
 NOTE:
 variable must be initialized
