@@ -67,6 +67,13 @@ def validate_line(code: str) -> bool:
     # (?<!::) is a negative lookbehind assertion.
     return bool(re.match(r"^[a-zA-Z0-9].*(?<!(\;|\=|\-|\*|\&|\^|\%|\$|\#|\@|\!|\±|\§|\`|\~|\||\?|\/|\>|\<|\,|\.))(?<!\)\))(?<!::[^)])(?<!}}[^)])(?<!}[^)])(?<!:[^)\s])$", code))
 
+def leading_whitespace_length(s):
+    trimmed_string = s.lstrip()
+    return len(s) - len(trimmed_string)
+
+def tab_next_line(code: str) -> bool:
+    return bool(re.match('[a-z].*:$', code))
+
 def split_code(code: str):
     clean_code = code.strip()
     if clean_code.startswith("wonel("):
@@ -100,6 +107,18 @@ Khejna danga juum, {variable_name} nekut si turii.
     else:
         print(f"""
 Khejna danga juum, {variable_name} nekut si turii.
+                   {"-" * len(variable_name)}
+""")
+        
+def indentation_error(variable_name: str, showDifferentMsg = False):
+    if showDifferentMsg:
+        print(f"""
+Khejna danga juum, {variable_name} dafa wara def dara.
+                   {"-" * len(variable_name)}
+""")
+    else:
+        print(f"""
+Khejna danga juum, {variable_name} dafa wara am palace.
                    {"-" * len(variable_name)}
 """)
 
@@ -228,10 +247,35 @@ def handle_arithmetic(code: str) -> None:
 def validate_tokens(code: str, declared_variables: [str]) -> str:
     line_codes = split_by_new_line(code)
     is_valid = True
+    should_tab_next_line = False
+    previous_value = ""
+    previous_value_tab_length = 0
+
 
     for line in line_codes:
         strippedLine = line.strip()
-        if validate_line(strippedLine):
+        if validate_line(strippedLine) or should_tab_next_line:
+            if should_tab_next_line:
+                white_space_len = leading_whitespace_length(line)
+                
+                print("WHITE", white_space_len, line)
+                if previous_value_tab_length:
+                    if not previous_value_tab_length + 8:
+                        indentation_error(strippedLine)
+                        quit()
+
+                if white_space_len % 4 > 0 or not white_space_len:
+                    if not strippedLine:
+                        indentation_error(previous_value, True)
+                    else:
+                        indentation_error(strippedLine)
+                    quit()
+            should_tab_next_line = tab_next_line(strippedLine)
+            previous_value_tab_length = leading_whitespace_length(line)
+
+            if should_tab_next_line:
+                previous_value = strippedLine
+
             if is_declaring_variable(strippedLine):
                 variable_name = line.split("=")[0].strip()
                 if not variable_name in declared_variables:
@@ -391,4 +435,14 @@ Only positive numbers as allowed()
 floats are rounded to to the nearest number .75 becomes .8
 {bena yoka nyaar}asds
     Throws error. Fix print statement
+
+first line after code block cannot be whitespace
+    sunekeh bena:
+
+        bena
+    (This will throw error)
+
+    (Correct)
+    sunekeh bena:
+        bena
 """

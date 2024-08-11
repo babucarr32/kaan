@@ -58,7 +58,14 @@ defkatValue = tur()
 print(defkatValue)
 
 while bena < jurom:
+        break
         tura = input("Lan moneka sa tur? ")
         if tura == "Babucarr":
-                print("Welcome " + tura)
-                break
+        print("Welcome " + tura)
+
+tura = "Abubacarr"
+print(tura)
+
+if bena:
+        bena
+

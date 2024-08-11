@@ -47,7 +47,14 @@ defkatValue = tur()
 wonel(defkatValue)
 
 feka bena mohndaw jurom:
+        dama
         tura = dugal("Lan moneka sa tur? ")
         sunekeh tura mohemak "Babucarr":
-                wonel("Welcome " + tura)
-                dama
+        wonel("Welcome " + tura)
+
+tura = "Abubacarr"
+wonel(tura)
+
+sunekeh bena:
+        bena
+
