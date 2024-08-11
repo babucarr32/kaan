@@ -50,5 +50,7 @@ print("Hello world" + "Tent")
 
 def tur():
         print("Man mai def")
+        return "Man la man la..."
 
 defkatValue = tur()
+print(defkatValue)

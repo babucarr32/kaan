@@ -10,6 +10,7 @@
         number_two,
         defkatValue,
 }}
+
 messages ="Man la messages..."
 amut={fuk}
 
@@ -42,3 +43,4 @@ defal tur():
         deloh "Man la man la..."
 
 defkatValue = tur()
+wonel(defkatValue)

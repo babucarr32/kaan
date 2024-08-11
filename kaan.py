@@ -47,13 +47,14 @@ def is_function(code: str):
 #     return content
 
 
-def split_by_new_line(code: str):
-    # content = get_code_content(code)
-    # print("content", )
+def split_by_new_line(code: str) -> bool:
     return re.split('\n', code)
 
-def is_returning(code: str):
-    return bool(re.match('deloh '))
+def is_returning(code: str) -> bool:
+    return bool(re.match('deloh ', code))
+
+def validate_return(code: str) -> bool:
+    return bool(re.match("deloh(\s+|\s)(\".*\"\B|\'.*\'\B)", code))
 
 def split_code(code: str):
     clean_code = code.strip()
@@ -218,9 +219,8 @@ def handle_arithmetic(code: str) -> None:
 def validate_tokens(code: str, variables: [str]) -> str:
     line_codes = split_by_new_line(code)
     is_valid = True
+
     for line in line_codes:
-#         is_line_valid = validate_line(line)
-#         print("is_line_valid", is_line_valid)
         if is_declaring_variable(line):
             variable_name = line.split("=")[0].strip()
             
@@ -241,6 +241,15 @@ def validate_tokens(code: str, variables: [str]) -> str:
                 print("*****", is_variable_valid)
                 variable_declaration_error(variable_value, variables)
                 quit()
+
+        elif is_returning(line.strip()):
+            is_return_valid = validate_return(line.strip())
+            if not is_return_valid:
+                print(f"""
+Khejna danga juum {line.strip()} warut neka fofu
+                  {"-"*len(line.strip())}""")
+                quit()
+            
         else:
             if is_valid:
                 tokens = split_code(line)
@@ -305,8 +314,10 @@ def __main__():
         
         # run the built file
         subprocess.run(["python3", "build.py"])
-    
-__main__()
+
+if __name__ == "__main__":
+    __main__()
+
 # print(token[":"])
 
 """
