@@ -118,7 +118,7 @@ Khejna danga juum, {variable_name} dafa wara def dara.
 """)
     else:
         print(f"""
-Khejna danga juum, {variable_name} dafa wara am palace.
+Khejna danga juum, {variable_name} nyenent palace la wara am si boraam.
                    {"-" * len(variable_name)}
 """)
 
@@ -255,12 +255,12 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
     for line in line_codes:
         strippedLine = line.strip()
         if validate_line(strippedLine) or should_tab_next_line:
+            # validate indentations
             if should_tab_next_line:
                 white_space_len = leading_whitespace_length(line)
-                
-                print("WHITE", white_space_len, line)
+
                 if previous_value_tab_length:
-                    if not previous_value_tab_length + 8:
+                    if white_space_len != previous_value_tab_length + 4:
                         indentation_error(strippedLine)
                         quit()
 

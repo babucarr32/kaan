@@ -1,24 +1,23 @@
-{{ 
-        
-        amut,
-        defa,
-        arit,
-        tura,
-        result,
-        message,
-        messages,
-        resulter,
-        number_two,
-        defkatValue,
+{{
+    amut,
+    defa,
+    arit,
+    tura,
+    result,
+    message,
+    messages,
+    resulter,
+    number_two,
+    defkatValue,
 }}
 
 messages ="Man la messages..."
 amut={fuk}
 
 sunekeh bena mohopah nyaar:
-        wonel("Dega")
+    wonel("Dega")
 kon:
-        wonel(amut)
+    wonel(amut)
 
 result = {nyaar yoka nyaar}
 wonel(result)
@@ -40,21 +39,21 @@ resulter = {bena yoka nyaar}
 wonel("Hello world" + "Tent")
 
 defal tur():
-        wonel("Man mai defal")
-        deloh "Man la man la..."
+    wonel("Man mai defal")
+    deloh "Man la man la..."
 
 defkatValue = tur()
 wonel(defkatValue)
 
 feka bena mohndaw jurom:
-        dama
-        tura = dugal("Lan moneka sa tur? ")
-        sunekeh tura mohemak "Babucarr":
+    dama
+    tura = dugal("Lan moneka sa tur? ")
+    sunekeh tura mohemak "Babucarr":
         wonel("Welcome " + tura)
 
 tura = "Abubacarr"
 wonel(tura)
 
 sunekeh bena:
-        bena
+    bena
 

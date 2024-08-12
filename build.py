@@ -27,9 +27,9 @@ messages ="Man la messages..."
 amut="fuk"
 
 if bena > nyaar:
-        print("Dega")
+    print("Dega")
 else:
-        print(amut)
+    print(amut)
 
 result = "nyenent"
 print(result)
@@ -51,21 +51,21 @@ resulter = "nyet"
 print("Hello world" + "Tent")
 
 def tur():
-        print("Man mai def")
-        return "Man la man la..."
+    print("Man mai def")
+    return "Man la man la..."
 
 defkatValue = tur()
 print(defkatValue)
 
 while bena < jurom:
-        break
-        tura = input("Lan moneka sa tur? ")
-        if tura == "Babucarr":
+    break
+    tura = input("Lan moneka sa tur? ")
+    if tura == "Babucarr":
         print("Welcome " + tura)
 
 tura = "Abubacarr"
 print(tura)
 
 if bena:
-        bena
+    bena
 
