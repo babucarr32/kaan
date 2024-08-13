@@ -1,2 +1,8 @@
 */.swp
 build.*
+.build.*
+.test.*
+.tokens.*
+.pytest_cache
+venv
+__pycache__

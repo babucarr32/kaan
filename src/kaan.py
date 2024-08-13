@@ -354,18 +354,27 @@ def compile_to_python(code: str, declared_variables:[str]) -> str:
     
     return new_code
 
-def __main__():
-    # read the code
-    with open("./test.vy") as f:
-        code  = f.read()
-        variables = get_variables(code)
+def kaan(__code__ = '', __dev__ = False):
+    if __code__:
+        variables = get_variables(__code__)
         if len(variables):
             if not is_initialized_variables_valid(variables):
                 quit()
         
-        new_code = get_code(code)
+        new_code = get_code(__code__)
         is_code_valid = validate_tokens(new_code, variables)
-    f.close()
+    else:
+        # read the code
+        with open("./src/test.vy") as f:
+            code  = f.read()
+            variables = get_variables(code)
+            if len(variables):
+                if not is_initialized_variables_valid(variables):
+                    quit()
+            
+            new_code = get_code(code)
+            is_code_valid = validate_tokens(new_code, variables)
+        f.close()
     
     if is_code_valid:
         compiled_code = compile_to_python(new_code, variables)
@@ -378,10 +387,8 @@ def __main__():
         # run the built file
         subprocess.run(["python3", "build.py"])
 
-if __name__ == "__main__":
-    __main__()
-
-# print(token[":"])
+    if __dev__:
+        return is_code_valid
 
 """
 for x in items:
