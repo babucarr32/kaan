@@ -333,6 +333,9 @@ Khejna danga juum {strippedLine} warut neka fofu
 
 def compile_to_python(code: str, declared_variables:[str]) -> str:
     new_code = ""
+     # Regex pattern to match keys not inside quotes
+    pattern_template = r'(?<!["\'])\b{}\b(?!["\'])(?=(?:[^"\']*(?:["\'][^"\']*["\']))*[^"\']*$)'
+
             
     if len(declared_variables):
         for v in declared_variables:
@@ -350,8 +353,9 @@ def compile_to_python(code: str, declared_variables:[str]) -> str:
             
     for key in lex_tokens.keys():
         if key not in arithmetics_values.values() and key not in numbers.keys():
-            new_code = new_code.replace(key, str(lex_tokens[key]))
-    
+            pattern = pattern_template.format(re.escape(key))  # Escape the key to safely use in the regex
+            new_code = re.sub(pattern, str(lex_tokens[key]), new_code)
+
     return new_code
 
 def kaan(__code__ = '', __dev__ = False):
@@ -380,12 +384,12 @@ def kaan(__code__ = '', __dev__ = False):
         compiled_code = compile_to_python(new_code, variables)
 
         # write the compiled code to build.py
-        with open("./build.py", "w") as f:
+        with open("./src/build.py", "w") as f:
             f.write(compiled_code)
         f.close()
         
         # run the built file
-        subprocess.run(["python3", "build.py"])
+        subprocess.run(["python3", "./src/build.py"])
 
     if __dev__:
         return is_code_valid
