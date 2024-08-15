@@ -3,6 +3,7 @@
     defa,
     arit,
     tura,
+    fruits,
     result,
     message,
     messages,
@@ -57,3 +58,7 @@ wonel(tura)
 sunekeh bena:
     bena
 
+fruits = ["Mango", "Banana"]
+
+puru fruit bunekasi fruits:
+    wonel(fruit)

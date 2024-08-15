@@ -67,6 +67,9 @@ def validate_line(code: str) -> bool:
     # (?<!::) is a negative lookbehind assertion.
     return bool(re.match(r"^[a-zA-Z0-9].*(?<!(\;|\=|\-|\*|\&|\^|\%|\$|\#|\@|\!|\±|\§|\`|\~|\||\?|\/|\>|\<|\,|\.))(?<!\)\))(?<!::[^)])(?<!}}[^)])(?<!}[^)])(?<!:[^)\s])$", code))
 
+def is_for_loop(code: str) -> bool:
+    return bool(re.match(r"^puru", code))
+
 def leading_whitespace_length(s):
     trimmed_string = s.lstrip()
     return len(s) - len(trimmed_string)
@@ -310,6 +313,7 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
             else:
                 if is_valid:
                     tokens = split_code(line)
+                    is_using_for_loop = is_for_loop(strippedLine)
                     for token in tokens:
                         if token:
                             if is_print_statement(token):
@@ -319,8 +323,12 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                                     # make sure token is not ''
                                     is_valid = is_token_in_lex_tokens(token) or token in declared_variables or is_string(token)
                                     if not is_valid:
-                                        print("breaking...", token)
-                                        break
+                                        if is_using_for_loop:
+                                            variable_declaration_error(token, declared_variables)
+                                            quit()
+                                        else:
+                                            print("breaking...", token)
+                                            break
                 else:
                     break
         else:

@@ -64,3 +64,38 @@ class TestVariableAssignment:
             password=username
         """
         self.handle_assert(code)
+
+    def test_8(self):
+        code = """
+            {{fruits}}
+            fruits=["Mango", "Banana"]
+        """
+        self.handle_assert(code)
+    
+    def test_9(self):
+        code = """
+            {{fruits}}
+            fruits=["Mango", "Banana"];
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_10(self):
+        code = """
+            {{fruits}}
+            fruits=[]
+        """
+        self.handle_assert(code)
+    
+    def test_11(self):
+        code = """
+            {{fruits}}
+            fruits=       []
+        """
+        self.handle_assert(code)
+    
+    def test_12(self):
+        code = """
+            {{fruits}}
+            fruits=["Mango", "Banana"]]
+        """
+        self.handle_assert(code, systemExit=True)
