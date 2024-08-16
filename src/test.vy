@@ -3,6 +3,7 @@
     defa,
     arit,
     tura,
+    fruit,
     fruits,
     result,
     message,

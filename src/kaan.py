@@ -1,40 +1,7 @@
 import re
 import subprocess
-
-lex_tokens = {
-    "sunekeh": "if",
-    "mohopah": ">",
-    "mohndaw": "<",
-    "wonel": "print",
-    ":": ":",
-    "kon": "else",
-    "puru": "for",
-    "bunekasi": "in",
-    "feka": "while",
-    "defal": "def",
-    "dama": "break",
-    "mohemak": "==",
-    "dugal": "input",
-    "yoka": "+",
-    "deloh": "return",
-    "waanyi": "-",
-    "sedoh": "/",
-    "ful": "*",
-}
-
-numbers = {
-    "neen": 0,
-    "bena": 1,
-    "nyaar": 2,
-    "nyet": 3,
-    "nyenent": 4,
-    "jurom": 5,
-    "juromBen": 6,
-    "juromNyaar": 7,
-    "juromNyet": 8,
-    "juromNyenent": 9,
-    "fuk": 10,
-}
+from tokens import lex_tokens
+from tokens import numbers
 
 arithmetics_values = {}
 
@@ -148,10 +115,10 @@ def is_initialized_variables_valid(variable_names: [str]) -> bool:
     return is_valid
 
 def get_code(code: str) -> str:
-    splitedCode = re.split('\{\{.*?\}\}', code, flags=re.DOTALL)
-    if len(splitedCode) > 1:
-        return splitedCode[1]
-    return splitedCode[0]
+    splittedCode = re.split('\{\{.*?\}\}', code, flags=re.DOTALL)
+    if len(splittedCode) > 1:
+        return splittedCode[1]
+    return splittedCode[0]
 
 def is_doing_arithmetic_operation(code: str) -> bool:
     return bool(re.match("^{(\s|[a-zA-Z]).*(\s|[a-zA-Z])}\B", code))
@@ -248,11 +215,11 @@ def handle_arithmetic(code: str) -> None:
         arithmetics_values[code] = result
                 
 def validate_tokens(code: str, declared_variables: [str]) -> str:
-    line_codes = split_by_new_line(code)
     is_valid = True
-    should_tab_next_line = False
     previous_value = ""
+    should_tab_next_line = False
     previous_value_tab_length = 0
+    line_codes = split_by_new_line(code)
 
 
     for line in line_codes:
@@ -366,7 +333,7 @@ def compile_to_python(code: str, declared_variables:[str]) -> str:
 
     return new_code
 
-def kaan(__code__ = '', __dev__ = False):
+def kaan(__code__ = '', __dev__ = False, filePath = ''):
     if __code__:
         variables = get_variables(__code__)
         if len(variables):
@@ -377,7 +344,7 @@ def kaan(__code__ = '', __dev__ = False):
         is_code_valid = validate_tokens(new_code, variables)
     else:
         # read the code
-        with open("./src/test.vy") as f:
+        with open(filePath) as f:
             code  = f.read()
             variables = get_variables(code)
             if len(variables):
