@@ -100,6 +100,20 @@ wonel("sunyuAt " + sunyuAt)
 `mohemak` is used for equality checks `==`
 `emutak` is used for non equality checks `!=`
 
+Example
+```
+{{
+    tur,
+    saTur,
+    sumaTur,
+}}
+
+satur = "Ali"
+sumaTur = "baboucarr"
+tur = {satur mohemak sumaTur}
+wonel(tur)
+```
+
 ### Looping
 There are two looping techniques in kaan, `puru` and `feka`.
 
