@@ -1,0 +1,77 @@
+
+"""
+for x in items:
+    print(x)
+
+num = 0
+while num < 10:
+    print(num)
+    num += 1
+
+TODO
+1. Fix casting str and number
+2. Fix print issue
+3. (check for variables within code block)
+4. Make sure variable name on contains letter or letter with number or _only
+sunekeh nyet mohopah nyaar:
+        wonel("'True\"'")
+kon:
+        wonel(Falseisdifesfdf)
+5. Numbers should be separated from lex tokens to prevent tokens like kon from passing value checks
+6. Keyboard interupt error on taking input. (Potential fix use string template to wrap input with try catch and display custom error)
+7. Test wonel(name())
+8. defkatValue = tur(): (Enhance the error message for this line )
+9. boolean x == y -> dudegah/dega
+10. equality checks {x mohemak y} / {x emutak y}
+
+NOTE:
+variable must be initialized
+variable name with newline in between is treated as single variable
+{{
+ amut
+tur
+}}
+becomes "amuttur"
+
+variable declaration should happen in only one scope.
+{{amuttur}}
+
+not
+{{amuttur}}
+{{amuttur}}
+
+The code below will be ignored during compilation.
+But, python will throw an error during execution.
+sunekeh bena mohopah nyaar:
+        wonel("Dega")
+        amut = "1012"
+kon:
+        wonel(amut)
+
+Allowed data types [] {} number and string
+Only positive numbers as allowed()
+floats are rounded to to the nearest number .75 becomes .8
+{bena yoka nyaar}asds
+    Throws error. Fix print statement
+
+first line after code block cannot be whitespace
+    sunekeh bena:
+
+        bena
+    (This will throw error)
+
+    (Correct)
+    sunekeh bena:
+        bena
+
+The code below will not work as the arithmetics operations are done at build time.
+"
+    {{ current }}
+
+    current = fuk
+    current = {current waanyi bena}  
+    wonel(current)
+                
+"
+
+"""

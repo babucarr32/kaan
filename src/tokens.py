@@ -11,12 +11,15 @@ lex_tokens = {
     "defal": "def",
     "dama": "break",
     "mohemak": "==",
+    "emutak": "!=",
     "dugal": "input",
     "yoka": "+",
     "deloh": "return",
     "waanyi": "-",
     "sedoh": "/",
     "ful": "*",
+    "degah": "True",
+    "dudegah": "False",
 }
 
 numbers = {

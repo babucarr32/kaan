@@ -74,5 +74,14 @@ class TestArithmetics:
         """
         self.handle_assert(code)
          
+    def test_9(self):
+        code = """
+            {{ current }}
 
+            current = fuk
+            current = {current waanyi bena}  
+            wonel(current)
+                      
+        """
+        self.handle_assert(code)
 

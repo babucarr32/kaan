@@ -1,4 +1,5 @@
 import re
+import os
 import subprocess
 from tokens import lex_tokens
 from tokens import numbers
@@ -359,76 +360,13 @@ def kaan(__code__ = '', __dev__ = False, filePath = ''):
         compiled_code = compile_to_python(new_code, variables)
 
         # write the compiled code to build.py
-        with open("./src/build.py", "w") as f:
+        outputPath = f"{os.getcwd()}/build.py"
+        with open(outputPath, "w") as f:
             f.write(compiled_code)
         f.close()
         
         # run the built file
-        subprocess.run(["python3", "./src/build.py"])
+        subprocess.run(["python3", outputPath])
 
     if __dev__:
         return is_code_valid
-
-"""
-for x in items:
-    print(x)
-
-num = 0
-while num < 10:
-    print(num)
-    num += 1
-
-TODO
-1. Fix casting str and number
-2. Fix print issue
-3. (check for variables within code block)
-4. Make sure variable name on contains letter or letter with number or _only
-sunekeh nyet mohopah nyaar:
-        wonel("'True\"'")
-kon:
-        wonel(Falseisdifesfdf)
-5. Numbers should be separated from lex tokens to prevent tokens like kon from passing value checks
-6. Keyboard interupt error on taking input. (Potential fix use string template to wrap input with try catch and display custom error)
-7. Test wonel(name())
-8. defkatValue = tur(): (Enhance the error message for this line )
-
-NOTE:
-variable must be initialized
-variable name with newline in between is treated as single variable
-{{
- amut
-tur
-}}
-becomes "amuttur"
-
-variable declaration should happen in only one scope.
-{{amuttur}}
-
-not
-{{amuttur}}
-{{amuttur}}
-
-The code below will be ignored during compilation.
-But, python will throw an error during execution.
-sunekeh bena mohopah nyaar:
-        wonel("Dega")
-        amut = "1012"
-kon:
-        wonel(amut)
-
-Allowed data types [] {} number and string
-Only positive numbers as allowed()
-floats are rounded to to the nearest number .75 becomes .8
-{bena yoka nyaar}asds
-    Throws error. Fix print statement
-
-first line after code block cannot be whitespace
-    sunekeh bena:
-
-        bena
-    (This will throw error)
-
-    (Correct)
-    sunekeh bena:
-        bena
-"""
