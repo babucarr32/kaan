@@ -23,6 +23,7 @@ kon:
 8. defkatValue = tur(): (Enhance the error message for this line )
 9. boolean x == y -> dudegah/dega
 10. equality checks {x mohemak y} / {x emutak y}
+11. Pass arguments to functions
 
 NOTE:
 variable must be initialized
@@ -73,5 +74,7 @@ The code below will not work as the arithmetics operations are done at build tim
     wonel(current)
                 
 "
+
+Replace wonel("senAt " + senAt) with wonel("senAt " yoka senAt)
 
 """

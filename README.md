@@ -114,6 +114,24 @@ tur = {satur mohemak sumaTur}
 wonel(tur)
 ```
 
+### Conditions
+
+
+### Function
+A function is a named block of code, that is called over and over again. In kaan, functions 
+are denoted by `defal`.
+Example
+```
+defal nuyu():
+    wonel("Nanga def")
+
+defal magWollaHaleh(at):
+    sunekeh at mohopah fuk:
+        wonel("Yow mag nga")
+    kon:
+        wonel("Yow haleh nga")
+```
+
 ### Looping
 There are two looping techniques in kaan, `puru` and `feka`.
 
