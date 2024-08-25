@@ -83,14 +83,25 @@ foo "foo" 'foo' foofoo "another foo inside" foo
 
 '''
 
-# Regex pattern to match keys not inside quotes
-pattern_template = r'(?<!["\'])\b{}\b(?!["\'])(?=(?:[^"\']*(?:["\'][^"\']*["\']))*[^"\']*$)'
+# # Regex pattern to match keys not inside quotes
+# pattern_template = r'(?<!["\'])\b{}\b(?!["\'])(?=(?:[^"\']*(?:["\'][^"\']*["\']))*[^"\']*$)'
 
-# Iterate over the lex_tokens dictionary
-for key in lex_tokens.keys():
-    if key not in arithmetics_values.values() and key not in numbers.keys():
-        pattern = pattern_template.format(re.escape(key))  # Escape the key to safely use in the regex
-        new_code = re.sub(pattern, str(lex_tokens[key]), new_code)
+# # Iterate over the lex_tokens dictionary
+# for key in lex_tokens.keys():
+#     if key not in arithmetics_values.values() and key not in numbers.keys():
+#         pattern = pattern_template.format(re.escape(key))  # Escape the key to safely use in the regex
+#         new_code = re.sub(pattern, str(lex_tokens[key]), new_code)
 
-print(new_code)
+# print(new_code)
 
+
+# GET ARGS
+
+data = "defal tura(x,y, y )"
+argsString = re.findall(r'\([a-zA-Z0-0].*\)$', data)
+args = argsString[0][1:-1].replace(" ", '').split(",")
+print("ARGUMENTS", args)
+
+
+x = re.split(':|\t', " clean_code   : name")
+print("X", x)

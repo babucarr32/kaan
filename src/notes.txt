@@ -27,6 +27,7 @@ kon:
 
 NOTE:
 variable must be initialized
+defal tut () // should fail with whitespace
 variable name with newline in between is treated as single variable
 {{
  amut
@@ -76,5 +77,6 @@ The code below will not work as the arithmetics operations are done at build tim
 "
 
 Replace wonel("senAt " + senAt) with wonel("senAt " yoka senAt)
-
+Function arguments cannot be preserved Keywords or numbers
+Variables mixed with numbers and letters might fail. Verify
 """

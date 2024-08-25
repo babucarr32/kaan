@@ -7,7 +7,20 @@ from tokens import numbers
 arithmetics_values = {}
 
 def is_function(code: str):
-    return bool(re.search('[a-zA-Z]+\(\)$', code))
+    return bool(re.search('[a-zA-Z]+\(.*\)$', code))
+
+def is_creating_function(code: str):
+    return bool(re.search('^defal [a-zA-Z]+\(.*\)', code))
+
+def is_function_arguments_valid(code: str, variables: list[str]):
+    argsString = re.findall(r'\([a-zA-Z0-0].*\)$', code)
+    if len(argsString):
+        args = argsString[0][1:-1].replace(" ", '').split(",")
+        for arg in args:
+            if is_token_in_lex_tokens(arg) or arg not in variables:
+                return {'is_valid': False, 'value': arg}
+    return {'is_valid': True, 'value': ''}
+
 
 # def get_code_content(code: str):
 #     splitted_content = code.split("}}")
@@ -47,6 +60,9 @@ def tab_next_line(code: str) -> bool:
 
 def split_code(code: str):
     clean_code = code.strip()
+    if is_creating_function(clean_code):
+        return re.split(':|\t', clean_code)
+
     if clean_code.startswith("wonel("):
         return [clean_code]
     
@@ -297,6 +313,14 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                                         else:
                                             print("breaking...", token)
                                             break
+                                else:
+                                    result = is_function_arguments_valid(token, declared_variables)
+                                    is_valid = result["is_valid"]
+                                    invalid_value = result["value"]
+
+                                    if not is_valid:
+                                        variable_declaration_error(invalid_value, declared_variables)
+                                        quit()
                 else:
                     break
         else:

@@ -1,4 +1,7 @@
 {{
+    xx,
+    yy,
+    zz,
     amut,
     defa,
     arit,
@@ -63,3 +66,6 @@ fruits = ["Mango", "Banana"]
 
 puru fruit bunekasi fruits:
     wonel(fruit)
+
+defal sumaTur(xx, yy,zzz):
+    wonel("DEGA sumaTur")
