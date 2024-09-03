@@ -97,11 +97,15 @@ foo "foo" 'foo' foofoo "another foo inside" foo
 
 # GET ARGS
 
-data = "defal tura(x,y, y )"
-argsString = re.findall(r'\([a-zA-Z0-0].*\)$', data)
-args = argsString[0][1:-1].replace(" ", '').split(",")
-print("ARGUMENTS", args)
+# data = "defal tura(x,y, y )"
+# argsString = re.findall(r'\([a-zA-Z0-0].*\)$', data)
+# args = argsString[0][1:-1].replace(" ", '').split(",")
+# print("ARGUMENTS", args)
 
 
-x = re.split(':|\t', " clean_code   : name")
-print("X", x)
+# x = re.split(':|\t', " clean_code   : name")
+# print("X", x)
+
+# INVOKING FUNCTION
+code =  'dama(a,b,f)'
+print(bool(re.findall(r'^[a-zA-Z0-9]+\(([a-zA-Z].*|\s+|)\)$', code)))

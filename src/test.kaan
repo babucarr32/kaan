@@ -2,6 +2,7 @@
     xx,
     yy,
     zz,
+    at,
     amut,
     defa,
     arit,
@@ -67,5 +68,14 @@ fruits = ["Mango", "Banana"]
 puru fruit bunekasi fruits:
     wonel(fruit)
 
-defal sumaTur(xx, yy,zzz):
+defal sumaTur(xx, yy, zz):
     wonel("DEGA sumaTur")
+
+sumaTur(bena, nyaar, nyet)
+
+defal magWollaHaleh(at):
+    sunekeh at mohopah nyenent:
+        wonel("Yow mag nga")
+    kon:
+        wonel("Yow haleh nga")
+magWollaHaleh(jurom)

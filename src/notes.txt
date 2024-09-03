@@ -24,6 +24,9 @@ kon:
 9. boolean x == y -> dudegah/dega
 10. equality checks {x mohemak y} / {x emutak y}
 11. Pass arguments to functions
+12. Function names should also be declared first.
+13. Enhance function validation, args should be checked for , in between strictly.
+
 
 NOTE:
 variable must be initialized
@@ -79,4 +82,22 @@ The code below will not work as the arithmetics operations are done at build tim
 Replace wonel("senAt " + senAt) with wonel("senAt " yoka senAt)
 Function arguments cannot be preserved Keywords or numbers
 Variables mixed with numbers and letters might fail. Verify
+
+
+Fix this variable initialization between code
+
+defal sumaTur(xx, yy, zz):
+    wonel("DEGA sumaTur")
+
+sumaTur(bena, nyaar, nyet)
+
+{{ at }}
+
+defal magWollaHaleh(at):
+    sunekeh at mohopah fuk:
+        wonel("Yow mag nga")
+    kon:
+        wonel("Yow haleh nga")
+magWollaHaleh(fuk)
+
 """

@@ -6,28 +6,23 @@ from tokens import numbers
 
 arithmetics_values = {}
 
-def is_function(code: str):
+def is_function(code: str) -> bool:
     return bool(re.search('[a-zA-Z]+\(.*\)$', code))
 
-def is_creating_function(code: str):
+def is_creating_function(code: str) ->  bool:
     return bool(re.search('^defal [a-zA-Z]+\(.*\)', code))
 
+def is_invoking_function(code: str) ->  bool:
+    return bool(re.findall(r'^[a-zA-Z]+\(([a-zA-Z].*|\s+|)\)$', code))
+
 def is_function_arguments_valid(code: str, variables: list[str]):
-    argsString = re.findall(r'\([a-zA-Z0-0].*\)$', code)
+    argsString = re.findall(r'\([a-zA-Z0-9].*\)$', code)
     if len(argsString):
         args = argsString[0][1:-1].replace(" ", '').split(",")
         for arg in args:
-            if is_token_in_lex_tokens(arg) or arg not in variables:
+            if is_token_in_lex_tokens(arg) and arg not in variables and arg not in numbers.keys():
                 return {'is_valid': False, 'value': arg}
     return {'is_valid': True, 'value': ''}
-
-
-# def get_code_content(code: str):
-#     splitted_content = code.split("}}")
-#     print("SPlitted", len(splitted_content), code)
-#     content = "".join(splitted_content)
-#     return content
-
 
 def split_by_new_line(code: str) -> bool:
     return re.split('\n', code)
@@ -64,6 +59,9 @@ def split_code(code: str):
         return re.split(':|\t', clean_code)
 
     if clean_code.startswith("wonel("):
+        return [clean_code]
+
+    if is_invoking_function(clean_code):
         return [clean_code]
     
     return re.split(' |:|\t', clean_code)

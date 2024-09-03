@@ -1,6 +1,10 @@
 # Kaan
 A wolof programming language, it is aim to make introduction to programming easy for
-complete beginners wolof speaking beginners in programming.
+complete wolof speaking beginners in programming. I believe writing code in your native/traditional will make one better understand what a program does, and make one easily understand how to write the basics of a programming language.
+
+Kaan is built un top of (python)[https://www.python.org]. At the end, kaan is compiled to compiled to python code, and executed. Meaning at the end, are running python.
+
+Kaan is by no way meant to be a high level programming, that should/can be used for building real life/production ready applications. The language is kept simple and minimal intentionally, to serve as a helper to introduction to programming.  
 
 ## What is programming?
 Programming is the technique of giving a computer a set of instruction to execute.
@@ -95,10 +99,10 @@ sunyuAt = {fuk sedoh nyaar}
 wonel("sunyuAt " + sunyuAt)
 ```
 
-`Comparison operators` is used for checking the equality of two values. Availble operators are `mohemak` and `emutak`.
+`Comparison operators` are used for checking the equality of two values or more values. Available operators are `mohemak` and `emutak`.
 
-`mohemak` is used for equality checks `==`
-`emutak` is used for non equality checks `!=`
+`mohemak` is used for checking the equality of two values`==`
+`emutak` is used for checking the unequality of two values`!=`
 
 Example
 ```
@@ -119,18 +123,42 @@ wonel(tur)
 
 ### Function
 A function is a named block of code, that is called over and over again. In kaan, functions 
-are denoted by `defal`.
+are denoted by `defal`. And are called by invoking the function by name, with parenthesis `defal()`
 Example
 ```
 defal nuyu():
     wonel("Nanga def")
+nuyu()
+```
+The function also accepts arguments. All arguments must be declared at the top level first.
+Example
+```
+{{ at }}
 
 defal magWollaHaleh(at):
     sunekeh at mohopah fuk:
         wonel("Yow mag nga")
     kon:
         wonel("Yow haleh nga")
+magWollaHaleh(fuk)
 ```
+
+Functions can also be assigned to variables.
+Example
+```
+{{ at, sumaMag }}
+
+defal magWollaHaleh(at):
+    sunekeh at mohopah fuk:
+        wonel("Yow mag nga")
+    kon:
+        wonel("Yow haleh nga")
+
+sumaMag = magWollaHaleh
+sumaMag(fuk)
+
+```
+
 
 ### Looping
 There are two looping techniques in kaan, `puru` and `feka`.

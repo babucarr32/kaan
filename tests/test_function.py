@@ -60,5 +60,88 @@ class TestFunctions:
                 wonel("Babucarr")
         """
         self.handle_assert(code, systemExit=True)
+
+    def test_7(self):
+        code  = """
+            {{santa, at}}
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur()
+        """
+        self.handle_assert(code, systemExit=True)
+
+    def test_8(self):
+        code  = """
+            {{santa, at}}
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur("Babu")
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_8(self):
+        code  = """
+            {{santa, at}}
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur("Babu", 'Jurom')
+        """
+        self.handle_assert(code)
+
+    def test_9(self):
+        code  = """
+            {{santa, at}}
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur("babu", 40)
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_10(self):
+        code  = """
+            {{santa, at, sumaTur, sumaAt}}
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur(sumaTur, sumaAt)
+        """
+        self.handle_assert(code)
+    
+    def test_11(self):
+        code  = """
+            {{
+                at,
+                santa,
+                sumaAt,
+                sumaTur,
+            }}
+
+            sumaTur="Babucarr"
+            sumaAt=Jurom
+
+            defal tur (santa, at):
+                wonel("Babucarr")
+            tur(sumaTur, sumaAt)
+        """
+        self.handle_assert(code)
+
+    def test_12(self):
+        code  = """
+            {{
+                at,
+                santa,
+                sumaAt,
+                sumaTur,
+                jelalTur
+            }}
+
+            sumaTur="Babucarr"
+            sumaAt=Jurom
+
+            defal tur (santa, at):
+                wonel("Babucarr")
+            jelalTur = tur
+            jelalTur(sumaTur, sumaAt)
+        """
+        self.handle_assert(code)
   
 
