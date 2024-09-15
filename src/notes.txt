@@ -17,7 +17,7 @@ sunekeh nyet mohopah nyaar:
         wonel("'True\"'")
 kon:
         wonel(Falseisdifesfdf)
-5. Numbers should be separated from lex tokens to prevent tokens like kon from passing value checks
+5. Numbers should be separated from lex tokens to prevent tokens like kon from passing value checks -----
 6. Keyboard interupt error on taking input. (Potential fix use string template to wrap input with try catch and display custom error)
 7. Test wonel(name())
 8. defkatValue = tur(): (Enhance the error message for this line )
