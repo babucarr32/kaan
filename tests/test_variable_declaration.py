@@ -55,3 +55,39 @@ arit,
             }
         """
         self.handle_assert(code, systemExit=True)
+
+    def test_variable_initialization_5(self):
+        code = """
+            {{messages2344}}
+        """
+        self.handle_assert(code)
+
+    def test_variable_initialization_6(self):
+        code = """
+            {{909messages}}
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_variable_initialization_7(self):
+        code = """
+            {{messages2344*******}}
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_variable_initialization_8(self):
+        code = """
+            {{messages2344__}}
+        """
+        self.handle_assert(code)
+    
+    def test_variable_initialization_9(self):
+        code = """
+            {{messages2344****trep}}
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_variable_initialization_5(self):
+        code = """
+            {{messages2344___****}}
+        """
+        self.handle_assert(code, systemExit=True)

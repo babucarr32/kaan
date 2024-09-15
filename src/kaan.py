@@ -73,11 +73,11 @@ def is_print_statement(text: str) -> bool:
     return bool(re.search('^wonel\(', text))
 
 def validate_initialized_variable(variable_name: str) -> bool:
-    is_valid = bool(re.match('[A-Za-z]', variable_name)) and not " " in variable_name
+    is_valid = bool(re.search(r'^[A-Za-z]+([0-9a-zA-Z]|_)+$', variable_name)) and not " " in variable_name
     
     if not is_valid: 
         print(f"""
-Tur letter keseh la wara kumaaseh {variable_name}
+Tur letter keseh la wara kumaaseh wola letter ak number wola letter ak _ {variable_name}
                                   {"-" * len(variable_name)}
 """)
     return is_valid
@@ -235,7 +235,6 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
     should_tab_next_line = False
     previous_value_tab_length = 0
     line_codes = split_by_new_line(code)
-
 
     for line in line_codes:
         strippedLine = line.strip()

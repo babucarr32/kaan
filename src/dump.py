@@ -107,5 +107,17 @@ foo "foo" 'foo' foofoo "another foo inside" foo
 # print("X", x)
 
 # INVOKING FUNCTION
-code =  'dama(a,b,f)'
-print(bool(re.findall(r'^[a-zA-Z0-9]+\(([a-zA-Z].*|\s+|)\)$', code)))
+# code =  'dama(a,b,f)'
+# print(bool(re.findall(r'^[a-zA-Z0-9]+\(([a-zA-Z].*|\s+|)\)$', code)))
+
+
+# VARIABLE DECLARATION
+# code = "hello"
+# code = "hello*"
+# code = "hello___"
+# code = "__hello"
+# code = "hello**___"
+# code = "hello----"
+# code = "hello9800"
+code = ".hello9800"
+print(bool(re.search(r'^[A-Za-z]+([0-9a-zA-Z]|_)+$', code)))

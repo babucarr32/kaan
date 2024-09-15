@@ -3,6 +3,7 @@
     yy,
     zz,
     at,
+    Name567__,
     amut,
     defa,
     arit,
@@ -79,3 +80,8 @@ defal magWollaHaleh(at):
     kon:
         wonel("Yow haleh nga")
 magWollaHaleh(jurom)
+
+Name567__ = "Helloooo"
+wonel(Name567__)
+
+wonel(magWollaHaleh())
