@@ -10,8 +10,8 @@ while num < 10:
 
 TODO
 1. Fix casting str and number
-2. Fix print issue
-3. (check for variables within code block)
+2. Fix print issue -----
+3. (check for variables within code block) ------
 4. Make sure variable name on contains letter or letter with number or _only
 sunekeh nyet mohopah nyaar:
         wonel("'True\"'")
