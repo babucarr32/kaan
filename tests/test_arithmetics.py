@@ -1,10 +1,7 @@
 import sys
 import os
 import pytest
-from src.kaan import kaan
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
+from kaan import kaan
 
 class TestArithmetics:
     def handle_assert(self, code: str, expect=True, systemExit=False):
@@ -20,7 +17,7 @@ class TestArithmetics:
         code  = """
             {bena ful nyaar}
         """
-        self.handle_assert(code)
+        self.handle_assert(code, systemExit=True)
 
     def test_2(self):
         code  = """

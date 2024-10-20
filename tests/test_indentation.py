@@ -1,10 +1,7 @@
 import sys
 import os
 import pytest
-from src.kaan import kaan
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
+from kaan import kaan
 
 class TestIndentation:
     def handle_assert(self, code: str, expect=True, systemExit=False):
@@ -43,7 +40,7 @@ class TestIndentation:
         """
         self.handle_assert(code, systemExit=True)
 
-    def test_2(self):
+    def test_4(self):
         code  = """
             sunekeh bena mohopah nyaar:
                 wonel("True")
@@ -51,6 +48,25 @@ class TestIndentation:
         """
         self.handle_assert(code, systemExit=True)
 
+    def test_5(self):
+        code  = """
+        {{result}}
+            result = {bena ful nyaar}
+        """
+        self.handle_assert(code, systemExit=True)
     
+    def test_6(self):
+        code  = """
+            {{result}}
+            result = {bena ful nyaar}
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_7(self):
+        code  = """
+            {{result}}
+        result = {bena ful nyaar}
+        """
+        self.handle_assert(code)
 
 

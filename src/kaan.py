@@ -147,11 +147,10 @@ def get_code(code: str) -> str:
 def is_doing_arithmetic_operation(code: str) -> bool:
     return bool(re.match("^{(\s|[a-zA-Z]).*(\s|[a-zA-Z])}\B", code))
 
-def validate_value(variable_value: str, variables:[str]) -> bool:
+def validate_value(variable_value: str, variables:[str], variable_name = '') -> bool:
     is_referencing_value = re.match("[a-zA-Z0-9]", variable_value)
     is_func_declared = False
     is_func = is_function(variable_value)
-    print("is_func___", is_func, variable_value)
     
     if is_func:
         func_name = get_function_name(variable_value)
@@ -159,9 +158,13 @@ def validate_value(variable_value: str, variables:[str]) -> bool:
         return is_func_declared
 
     is_input = is_taking_input(variable_value)
-    if is_referencing_value and not is_func and not is_input or not is_func_declared:
-        print("Invalid function...", variable_value)
-        return variable_value in variables or variable_value in numbers.keys()
+    if variable_name:
+        if is_referencing_value and not is_func and not is_input or not is_func_declared:
+            if variable_value in variables or variable_value in numbers.keys():
+                if variable_name not in numbers.keys():
+                    numbers[variable_name] = variable_value
+                return True
+            return False
     
     if is_doing_arithmetic_operation(variable_value):
         values = re.split("({|\s|})", variable_value)
@@ -179,7 +182,6 @@ def validate_print_statement(code: str, variables: [str]) -> bool:
     
     if not is_printing_string:
         print_content = re.findall('\([a-zA-Z].+\)$', code)[0][1:-1]
-        print("-----PRINT CONTENT------", print_content)
         if print_content in lex_tokens or validate_value(print_content, variables):
             pass
         else:
@@ -219,7 +221,11 @@ def handle_arithmetic(code: str) -> None:
                 if i in lex_tokens:
                     calc += f"{lex_tokens[i]} "
                 elif i in numbers:
-                    calc += f"{numbers[i]} "
+                    if type(numbers[i]) == int:
+                        calc += f"{numbers[i]} "
+                    else: 
+                        num_value = numbers[i]
+                        calc += f"{numbers[num_value]} "
                 else:
                     variable_declaration_error(i)
                     quit()
@@ -285,17 +291,17 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                     
                 variable_value = re.split("[a-zA-Z].+=", line)[1].strip()
 
-                is_variable_valid = validate_value(variable_value, declared_variables)
+                is_variable_valid = validate_value(variable_value, declared_variables, variable_name)
                 
                 is_arithmetic = is_doing_arithmetic_operation(variable_value)
-                
                 if is_arithmetic:
                     handle_arithmetic(variable_value)
 
-                if not is_variable_valid:
-                    print("*****", is_variable_valid)
-                    variable_declaration_error(variable_value, declared_variables)
-                    quit()
+                else:
+                    if not is_variable_valid:
+                        print("*****", is_variable_valid)
+                        variable_declaration_error(variable_value, declared_variables)
+                        quit()
 
             elif is_taking_input(strippedLine):
                 pass
@@ -315,7 +321,6 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                     for token in tokens:
                         if token:
                             if is_print_statement(token):
-                                print("PRINTING...", token)
                                 validate_print_statement(token, declared_variables)
                             else:
                                 if not is_function(token):

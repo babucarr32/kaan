@@ -1,10 +1,7 @@
 import sys
 import os
 import pytest
-from src.kaan import kaan
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
+from kaan import kaan
 
 class TestForLoop:
     def handle_assert(self, code: str, expect=True, systemExit=False):
