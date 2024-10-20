@@ -9,6 +9,13 @@ arithmetics_values = {}
 def is_function(code: str) -> bool:
     return bool(re.search('[a-zA-Z]+\(.*\)$', code))
 
+def is_variable_name_declared(name: str, variables: [str]) -> bool:
+    return name in variables
+
+def get_function_name(function_name: str) -> str:
+    func_name = function_name.replace(" ", '').split("(")[0]
+    return func_name
+
 def is_creating_function(code: str) ->  bool:
     return bool(re.search('^defal [a-zA-Z]+\(.*\)', code))
 
@@ -40,6 +47,8 @@ def is_string(code: str) -> bool:
     return bool(re.match('(\"|\')[a-zA-Z0-0]+(\"|\')', code))
 
 def validate_line(code: str) -> bool:
+    if bool(re.match('^wonel\(', code)):
+        return True
     # (?<!::) is a negative lookbehind assertion.
     return bool(re.match(r"^[a-zA-Z0-9].*(?<!(\;|\=|\-|\*|\&|\^|\%|\$|\#|\@|\!|\±|\§|\`|\~|\||\?|\/|\>|\<|\,|\.))(?<!\)\))(?<!::[^)])(?<!}}[^)])(?<!}[^)])(?<!:[^)\s])$", code))
 
@@ -140,9 +149,18 @@ def is_doing_arithmetic_operation(code: str) -> bool:
 
 def validate_value(variable_value: str, variables:[str]) -> bool:
     is_referencing_value = re.match("[a-zA-Z0-9]", variable_value)
+    is_func_declared = False
     is_func = is_function(variable_value)
+    print("is_func___", is_func, variable_value)
+    
+    if is_func:
+        func_name = get_function_name(variable_value)
+        is_func_declared = is_variable_name_declared(func_name, variables)
+        return is_func_declared
+
     is_input = is_taking_input(variable_value)
-    if is_referencing_value and not is_func and not is_input:
+    if is_referencing_value and not is_func and not is_input or not is_func_declared:
+        print("Invalid function...", variable_value)
         return variable_value in variables or variable_value in numbers.keys()
     
     if is_doing_arithmetic_operation(variable_value):
@@ -154,29 +172,28 @@ def validate_value(variable_value: str, variables:[str]) -> bool:
                         return False
     return True
 
-def validate_print_statement(code: str, text: str, variables: [str]) -> bool:
-    is_printing_string = bool(re.search('^wonel\(\'.+\'\)\B|^wonel\(\".+\"\)\B', text))
+def validate_print_statement(code: str, variables: [str]) -> bool:
+    is_printing_string = bool(re.match(r'(wonel\(".*"\)|wonel\(\'.*\'\))$', code))
     is_valid = True
     bad_content = ''
     
     if not is_printing_string:
-        print_content = re.split('^wonel\(|\)', text)
-        for content in print_content:
-            # make sure token is not ''
-            if content:
-                if content in lex_tokens or validate_value(content, variables):
-                    pass
-                else:
-                    bad_content = content
-                    is_valid = False
-                    break
+        print_content = re.findall('\([a-zA-Z].+\)$', code)[0][1:-1]
+        print("-----PRINT CONTENT------", print_content)
+        if print_content in lex_tokens or validate_value(print_content, variables):
+            pass
+        else:
+            print("Breaking...", is_printing_string)
+            bad_content = print_content
+            is_valid = False
 
     if is_valid:
         return is_valid
     else:
         print(f"""
 Khejna danga juum {bad_content} warut neka fofu
-                  {"-"*len(bad_content)}""")
+                  {"-"*len(bad_content)} \nwola\n""")
+        variable_declaration_error(bad_content, )
         quit()
 
 def is_declaring_variable(code: str) -> bool:
@@ -298,7 +315,8 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                     for token in tokens:
                         if token:
                             if is_print_statement(token):
-                                validate_print_statement(code, token, declared_variables)
+                                print("PRINTING...", token)
+                                validate_print_statement(token, declared_variables)
                             else:
                                 if not is_function(token):
                                     # make sure token is not ''
@@ -311,12 +329,21 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                                             print("breaking...", token)
                                             break
                                 else:
-                                    result = is_function_arguments_valid(token, declared_variables)
-                                    is_valid = result["is_valid"]
-                                    invalid_value = result["value"]
+                                    func = token.split('defal ')[-1].strip()
+                                    func_name = get_function_name(func)
+                                    is_func_declared = is_variable_name_declared(func_name, declared_variables)
+                                    print("func_name", func_name, "is_func_declared", is_func_declared)
+                                    if is_func_declared:
+                                        result = is_function_arguments_valid(func, declared_variables)
+                                        print("Validating:...", result)
+                                        is_valid = result["is_valid"]
+                                        invalid_value = result["value"]
 
-                                    if not is_valid:
-                                        variable_declaration_error(invalid_value, declared_variables)
+                                        if not is_valid:
+                                            variable_declaration_error(invalid_value, declared_variables)
+                                            quit()
+                                    else:
+                                        variable_declaration_error(func_name, declared_variables)
                                         quit()
                 else:
                     break

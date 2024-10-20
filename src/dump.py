@@ -119,5 +119,19 @@ foo "foo" 'foo' foofoo "another foo inside" foo
 # code = "hello**___"
 # code = "hello----"
 # code = "hello9800"
-code = ".hello9800"
-print(bool(re.search(r'^[A-Za-z]+([0-9a-zA-Z]|_)+$', code)))
+# code = ".hello9800"
+# print(bool(re.search(r'^[A-Za-z]+([0-9a-zA-Z]|_)+$', code)))
+
+# VALIDATE PRINT STATEMENT
+# code = "wonel(\"Hello world\)"
+# code = "wonel(\"Hello world\")"
+# code = "wonel(\"Hello world\')"
+# code = "wonel(\Hello world\')"
+# code = "wonel(\'Hello world\")"
+# code = "wonel(\'Hello world\')"
+# code = "wonel(\"Hello world\")"
+# print(bool(re.match(r'(wonel\(".*"\)|wonel\(\'.*\'\))$', code)))
+
+# Find values within print
+code = "wonel(Hello())"
+print(re.findall('\([a-zA-Z].+\)$', code)[0][1:-1])

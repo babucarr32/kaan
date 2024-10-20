@@ -39,7 +39,7 @@ class TestFunctions:
     
     def test_4(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur(santa, at):
                 wonel("Babucarr")
         """
@@ -47,7 +47,7 @@ class TestFunctions:
 
     def test_5(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur(santa, at, nyet):
                 wonel("Babucarr")
         """
@@ -55,7 +55,7 @@ class TestFunctions:
     
     def test_6(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
         """
@@ -63,7 +63,7 @@ class TestFunctions:
 
     def test_7(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
             tur()
@@ -72,7 +72,7 @@ class TestFunctions:
 
     def test_8(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
             tur("Babu")
@@ -81,7 +81,7 @@ class TestFunctions:
     
     def test_8(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
             tur("Babu", 'Jurom')
@@ -90,7 +90,7 @@ class TestFunctions:
 
     def test_9(self):
         code  = """
-            {{santa, at}}
+            {{santa, at, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
             tur("babu", 40)
@@ -99,7 +99,7 @@ class TestFunctions:
     
     def test_10(self):
         code  = """
-            {{santa, at, sumaTur, sumaAt}}
+            {{santa, at, sumaTur, sumaAt, tur}}
             defal tur (santa, at):
                 wonel("Babucarr")
             tur(sumaTur, sumaAt)
@@ -110,6 +110,7 @@ class TestFunctions:
         code  = """
             {{
                 at,
+                tur,
                 santa,
                 sumaAt,
                 sumaTur,
@@ -128,6 +129,7 @@ class TestFunctions:
         code  = """
             {{
                 at,
+                tur,
                 santa,
                 sumaAt,
                 sumaTur,
@@ -141,6 +143,40 @@ class TestFunctions:
                 wonel("Babucarr")
             jelalTur = tur
             jelalTur(sumaTur, sumaAt)
+        """
+        self.handle_assert(code)
+    
+    def test_13(self):
+        code  = """
+            {{ at }}
+            defal tur ():
+                wonel("Babucarr")
+            tur()
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_14(self):
+        code  = """
+            {{ at }}
+            defal tur ():
+                wonel("Babucarr")
+            wonel(tur())
+        """
+        self.handle_assert(code, systemExit=True)
+    
+    def test_15(self):
+        code  = """
+            {{ maam }}
+            defal maam(at):
+                wonel("Yow maam nga")
+            maam()
+        """
+        self.handle_assert(code, systemExit=True)
+
+    def test_16(self):
+        code  = """
+            defal magWollaHaleh(at):
+                wonel("Yow mag nga" + 20)
         """
         self.handle_assert(code)
   
