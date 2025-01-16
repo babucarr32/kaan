@@ -27,7 +27,7 @@ def is_function_arguments_valid(code: str, variables: list[str]):
     if len(argsString):
         args = argsString[0][1:-1].replace(" ", '').split(",")
         for arg in args:
-            if is_token_in_lex_tokens(arg) and arg not in variables and arg not in numbers.keys():
+            if is_token_in_lex_tokens(arg) or arg not in variables or arg in numbers.keys():
                 return {'is_valid': False, 'value': arg}
     return {'is_valid': True, 'value': ''}
 
@@ -102,6 +102,12 @@ Khejna danga juum, {variable_name} nekut si turii.
         print(f"""
 Khejna danga juum, {variable_name} nekut si turii.
                    {"-" * len(variable_name)}
+""")
+
+def value_error(variable_name: str):
+    print(f"""
+Tur bii amut, {variable_name}.
+              {"-" * len(variable_name)}
 """)
         
 def indentation_error(variable_name: str, showDifferentMsg = False):
@@ -181,11 +187,11 @@ def validate_print_statement(code: str, variables: [str]) -> bool:
     bad_content = ''
     
     if not is_printing_string:
-        print_content = re.findall('\([a-zA-Z].+\)$', code)[0][1:-1]
+        # print_content = re.findall('\([a-zA-Z].+\)$', code)[0][1:-1]
+        print_content = re.findall('\(.*\)$', code)[0][1:-1]
         if print_content in lex_tokens or validate_value(print_content, variables):
             pass
         else:
-            print("Breaking...", is_printing_string)
             bad_content = print_content
             is_valid = False
 
@@ -232,23 +238,28 @@ def handle_arithmetic(code: str) -> None:
     
     result = ''
     evaluated = eval(calc)
-    for i in numbers:
-        if evaluated > 0:
-            remainder = get_remainder(evaluated)
-            if remainder:
-                [first_num, last_num] = str(round(remainder, 1)).split(".")
-                result = f"{get_number_key_by_value(first_num)} tomb {get_number_key_by_value(last_num)}"
-                break
+    last_number = max(list(numbers.values()))
+    if evaluated <= last_number:
+        for i in numbers:
+            if evaluated > 0:
+                remainder = get_remainder(evaluated)
+                if remainder:
+                    [first_num, last_num] = str(round(remainder, 1)).split(".")
+                    result = f"{get_number_key_by_value(first_num)} tomb {get_number_key_by_value(last_num)}"
+                    break
+                else:
+                    if evaluated == numbers[i]:
+                        result = i
+                        break
             else:
-                if evaluated == numbers[i]:
-                    result = i
-                    break
-        else:
-            if is_whole_number(evaluated):
-                absolute_number = abs(evaluated)
-                if absolute_number == numbers[i]:
-                    result = f"-{i}"
-                    break
+                if is_whole_number(evaluated):
+                    absolute_number = abs(evaluated)
+                    if absolute_number == numbers[i]:
+                        result = f"-{i}"
+                        break
+    else:
+        value_error(code)
+        quit()
     if result:
         arithmetics_values[code] = result
                 
@@ -299,7 +310,6 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
 
                 else:
                     if not is_variable_valid:
-                        print("*****", is_variable_valid)
                         variable_declaration_error(variable_value, declared_variables)
                         quit()
 
@@ -337,7 +347,6 @@ def validate_tokens(code: str, declared_variables: [str]) -> str:
                                     func = token.split('defal ')[-1].strip()
                                     func_name = get_function_name(func)
                                     is_func_declared = is_variable_name_declared(func_name, declared_variables)
-                                    print("func_name", func_name, "is_func_declared", is_func_declared)
                                     if is_func_declared:
                                         result = is_function_arguments_valid(func, declared_variables)
                                         print("Validating:...", result)
@@ -407,7 +416,7 @@ def kaan(__code__ = '', __dev__ = False, filePath = ''):
             
             new_code = get_code(code)
             is_code_valid = validate_tokens(new_code, variables)
-        f.close()
+        f.close()   
     
     if is_code_valid:
         compiled_code = compile_to_python(new_code, variables)
